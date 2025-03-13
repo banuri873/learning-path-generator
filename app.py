@@ -4,7 +4,8 @@ from letta_client import MessageCreate, CreateBlock
 import json
 import os
 import time
-import uuid
+# Use the built-in uuid module
+from uuid import uuid4
 from datetime import datetime
 
 
@@ -578,7 +579,7 @@ def get_or_create_agent():
 def get_user_id():
     """Get or create user ID from session"""
     if 'user_id' not in session:
-        session['user_id'] = str(uuid.uuid4())
+        session['user_id'] = str(uuid4())
         print(f"Created new user ID: {session['user_id']}")
 
     user_id = session['user_id']
@@ -1199,3 +1200,4 @@ if __name__ == '__main__':
     except Exception as e:
         print(f"Warning: Could not retrieve agent: {e}")
         print("A new agent will be created when needed.")
+    app.run(debug=True, port=5003)

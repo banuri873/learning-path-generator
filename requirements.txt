@@ -1,6 +1,6 @@
 flask==2.0.1
-letta_client==0.1.0
-anthropic==0.7.0
 requests==2.28.2
 python-dotenv==0.21.1
-uuid==1.30
+anthropic==0.7.0
+letta_client==0.1.0
+# Remove the uuid package as we'll use the built-in one
