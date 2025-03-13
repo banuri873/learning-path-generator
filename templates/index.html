@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Path Generator</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Learning Path Generator</h1>
+            <p class="subtitle">Create your personalized learning journey based on an in-depth skill assessment</p>
+        </header>
+
+        <!-- Profile Section -->
+        <section id="profile-section" class="section">
+            <div class="card">
+                <h2>Let's Get Started</h2>
+                <p>Answer a few quick questions to help us personalize your experience</p>
+                
+                <div class="form-group">
+                    <label for="experience">How many years of experience do you have?</label>
+                    <select id="experience" class="form-control">
+                        <option value="" selected disabled>Select your experience</option>
+                        <option value="0-1">0-1 years</option>
+                        <option value="1-3">1-3 years</option>
+                        <option value="3-5">3-5 years</option>
+                        <option value="5-10">5-10 years</option>
+                        <option value="10+">10+ years</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Did you study computer science or software related field in school?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="education" value="yes"> Yes
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="education" value="no"> No
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>What's your goal?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="goal" value="interview"> Preparing for an upcoming interview
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="goal" value="preparing"> No interview upcoming, just preparing
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="goal" value="fun"> Just learning for fun
+                        </label>
+                    </div>
+                </div>
+                
+                <button id="start-evaluator-btn" class="btn primary-btn">Continue to Evaluator</button>
+            </div>
+        </section>
+
+        <!-- Loading Section -->
+        <section id="loading-section" class="section hidden">
+            <div class="card">
+                <div class="loader"></div>
+                <h2 id="loading-message">Loading your personalized assessment...</h2>
+            </div>
+        </section>
+
+        <!-- Assessment Section -->
+        <section id="assessment-section" class="section hidden">
+            <div class="card">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progress-value"></div>
+                    </div>
+                    <span id="question-counter">Question 1 of 16</span>
+                </div>
+                
+                <div id="question-container">
+                    <h2 id="question-text">Question text will appear here</h2>
+                    <div id="options-container" class="options-container">
+                        <!-- Options will be dynamically inserted here -->
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="prev-question-btn" class="btn secondary-btn" disabled>Previous</button>
+                    <button id="next-question-btn" class="btn primary-btn">Next</button>
+                    <button id="submit-evaluation-btn" class="btn primary-btn hidden">Submit Answers</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="section hidden">
+            <div class="card">
+                <div class="results-header">
+                    <h2>Congratulations on completing the evaluator!</h2>
+                    <p>Here's how you performed compared to recommended levels</p>
+                </div>
+                
+                <div class="score-overview">
+                    <div class="overall-score">
+                        <div class="score-circle">
+                            <span id="overall-score-value">0%</span>
+                        </div>
+                        <p>Overall Score</p>
+                    </div>
+                    
+                    <div class="score-chart-container">
+                        <canvas id="score-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="area-breakdown">
+                    <h3>Knowledge Area Breakdown</h3>
+                    <div id="area-scores" class="area-scores">
+                        <!-- Area scores will be dynamically inserted here -->
+                    </div>
+                </div>
+                
+                <div class="results-actions">
+                    <button id="review-answers-btn" class="btn secondary-btn">Review Answers</button>
+                    <button id="generate-roadmap-btn" class="btn primary-btn">Generate My Learning Path</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Review Section -->
+        <section id="review-section" class="section hidden">
+            <div class="card">
+                <h2>Review Your Answers</h2>
+                <p>Here's a detailed breakdown of your assessment</p>
+                
+                <div id="review-container" class="review-container">
+                    <!-- Review items will be dynamically inserted here -->
+                </div>
+                
+                <button id="back-to-results-btn" class="btn secondary-btn">Back to Results</button>
+            </div>
+        </section>
+
+        <!-- Roadmap Section -->
+        <section id="roadmap-section" class="section hidden">
+            <div class="card">
+                <h2 id="roadmap-title">Here's a Straightforward Roadmap to Success</h2>
+                <p>Based on your assessment, we've tailored a 6-week learning journey</p>
+                
+                <div class="roadmap-overview">
+                    <div class="roadmap-header">
+                        <div class="level-badge" id="level-badge">Intermediate</div>
+                        <div class="roadmap-progress">
+                            <div class="progress-weeks">
+                                <span class="week" data-week="1">W1</span>
+                                <span class="week" data-week="2">W2</span>
+                                <span class="week" data-week="3">W3</span>
+                                <span class="week" data-week="4">W4</span>
+                                <span class="week" data-week="5">W5</span>
+                                <span class="week" data-week="6">W6</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-value" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="weeks-container" class="weeks-container">
+                    <!-- Week cards will be dynamically inserted here -->
+                </div>
+                
+                <div class="roadmap-actions">
+                    <button id="restart-btn" class="btn secondary-btn">Restart Evaluation</button>
+                    <button id="download-roadmap-btn" class="btn primary-btn">Download Roadmap</button>
+                    <button id="open-chat-btn" class="btn secondary-btn">Chat with Assistant</button>
+
+                </div>
+            </div>
+        </section>
+        <section id="chat-section" class="section hidden">
+            <div class="card">
+                <h2>Chat with Your Learning Assistant</h2>
+                <p>Ask questions about your learning path or get help with programming concepts</p>
+                
+                <div id="chat-container" class="chat-container">
+                    <div id="chat-messages" class="chat-messages">
+                        <div class="message assistant-message">
+                            <div class="message-content">
+                                Hello! I'm your learning assistant. How can I help you with your learning path today?
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <textarea id="chat-input" class="chat-input" placeholder="Type your message here..." rows="2"></textarea>
+                        <button id="send-message-btn" class="btn primary-btn">Send</button>
+                    </div>
+                </div>
+                
+                <div class="chat-actions">
+                    <button id="back-to-roadmap-btn" class="btn secondary-btn">Back to Roadmap</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+   
+
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Main JavaScript -->
+    <script src="/js/script.js"></script>
+</body>
+</html>
