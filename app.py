@@ -7,6 +7,7 @@ import time
 import uuid
 from datetime import datetime
 
+
 app = Flask(__name__, static_url_path='',
             static_folder='static', template_folder='templates')
 # Secret key for Flask session management
@@ -1091,25 +1092,26 @@ def clear_session():
 
     return jsonify({"success": True})
 
+
 @app.route('/api/chat', methods=['POST'])
 def chat_with_agent():
     """Send a chat message to the agent and get a response"""
     data = request.json
     message = data.get('message')
     context = data.get('context', {})
-    
+
     if not message:
         return jsonify({"error": "Message is required"}), 400
-    
+
     # Get user ID
     user_id = get_user_id()
     print(f"Chat message from user: {user_id}")
-    
+
     # Get or create agent
     agent_id = get_or_create_agent()
     if not agent_id:
         return jsonify({"error": "Failed to create or retrieve agent"}), 500
-    
+
     # Add context about the user and their progress
     context_prompt = ""
     if context.get('experience'):
@@ -1118,7 +1120,7 @@ def chat_with_agent():
         context_prompt += f"Computer science background: {context.get('education')}\n"
     if context.get('goal'):
         context_prompt += f"User's goal: {context.get('goal')}\n"
-    
+
     # Add evaluation results if available
     if context.get('evaluationResults'):
         results = context.get('evaluationResults')
@@ -1127,13 +1129,13 @@ def chat_with_agent():
         context_prompt += "Knowledge area scores:\n"
         for area, data in results.get('areas', {}).items():
             context_prompt += f"- {area}: {data.get('score')}% (recommended: {data.get('recommended')}%)\n"
-    
+
     # Add roadmap info if available
     if context.get('roadmapData'):
         roadmap = context.get('roadmapData')
         context_prompt += f"\nCurrent learning path: {roadmap.get('title')}\n"
         context_prompt += f"Level: {roadmap.get('level')}\n"
-    
+
     # Create the full message with context
     formatted_message = f"""
 [CONVERSATION CONTEXT]
@@ -1144,13 +1146,13 @@ def chat_with_agent():
 
 Please respond conversationally as the Learning Path Generator assistant. Format any code with markdown code blocks using triple backticks. Keep responses concise, educational and encouraging. If the user asks about technical concepts, provide accurate but accessible explanations.
 """
-    
+
     # Create message for agent
     chat_message = MessageCreate(
         role="user",
         content=formatted_message
     )
-    
+
     try:
         # Send message to agent
         print("Sending chat message to agent...")
@@ -1159,31 +1161,31 @@ Please respond conversationally as the Learning Path Generator assistant. Format
             messages=[chat_message]
         )
         print("Chat response received from agent")
-        
+
         # Extract the assistant message
         assistant_msg = extract_assistant_message(response)
-        
+
         # Save chat to user session if not already tracking chats
         if 'chat_history' not in user_sessions[user_id]:
             user_sessions[user_id]['chat_history'] = []
-        
+
         # Add to chat history
         user_sessions[user_id]['chat_history'].append({
             'role': 'user',
             'content': message,
             'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         })
-        
+
         user_sessions[user_id]['chat_history'].append({
             'role': 'assistant',
             'content': assistant_msg,
             'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         })
-        
+
         return jsonify({
             "response": assistant_msg
         })
-        
+
     except Exception as e:
         print(f"Error chatting with agent: {e}")
         return jsonify({"error": str(e)}), 500
@@ -1197,6 +1199,3 @@ if __name__ == '__main__':
     except Exception as e:
         print(f"Warning: Could not retrieve agent: {e}")
         print("A new agent will be created when needed.")
-
-    # Run the app
-    app.run(debug=True, port=5003)
