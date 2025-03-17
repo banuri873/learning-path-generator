@@ -1,15 +1,20 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "app.py",
-        "use": "@vercel/python"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/app.py"
-      }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/app.py"
+    }
+  ],
+  "env": {
+    "ANTHROPIC_API_KEY": "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",
+    "LETTA_BASE_URL": "http://localhost:8283",
+    "SECRET_KEY": "pranathi"
   }
+}
