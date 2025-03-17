@@ -1,8 +1,3 @@
 flask
-werkzeug
-jinja2
-itsdangerous
-click
-requests
-python-dotenv
-letta
+letta_client
+flask-cors
